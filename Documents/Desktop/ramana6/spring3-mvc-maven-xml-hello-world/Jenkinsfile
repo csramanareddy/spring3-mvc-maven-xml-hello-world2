@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    stages{
+        stage("clone the source code form github") {
+            steps {
+                script {
+                    git 'https://github.com/csramanareddy/spring3-mvc-maven-xml-hello-world.git';
+                }
+            }
+        }
+        stage("mvn build") {
+            steps {
+                script {
+                    // if you using windows then you should use 'bat'
+                    bat(/"${MAVEN_HOME}\bin\mvn" package/)
+            }
+        }
+    }
+   stage('artifact') {
+       steps{
+           script {
+      archive 'target/*.war'
+   }
+       }
+   }
+   stage ('deploy') {
+       steps {
+           script{
+   echo 'deployment started'
+       '**/target/*.war' 
+   }
+       }
+   }
+}
+}
+
+
